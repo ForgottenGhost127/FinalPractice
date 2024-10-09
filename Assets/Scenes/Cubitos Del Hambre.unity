@@ -443,6 +443,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0257c5e1232fcbd4c95d4cdfad6da8e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubitoPref: {fileID: 5455984977033601653, guid: d631fcbfd2acb334190d34332c3057ef, type: 3}
+  cubitoCount: 10
+  moveSpeed: 5
 --- !u!4 &2045267939
 Transform:
   m_ObjectHideFlags: 0
