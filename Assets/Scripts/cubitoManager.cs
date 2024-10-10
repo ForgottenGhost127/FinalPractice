@@ -47,7 +47,7 @@ public class cubitoManager : MonoBehaviour
         }
 
         bool CubitosReachTarget = false;
-        //float separDistance = 0.5f; //Distancia de separación entre los cubos, porque se me aglomeraban después de coger la primera moneda y visualmente, sólo se veía un cubo algo deforme.
+        //float separDistance = 3f; //Distancia de separación entre los cubos, porque se me aglomeraban después de coger la primera moneda y visualmente, sólo se veía un cubo algo deforme.
 
         while(!CubitosReachTarget)
         {
@@ -58,7 +58,7 @@ public class cubitoManager : MonoBehaviour
                 cube.transform.position = Vector3.MoveTowards(cube.transform.position, target, moveSpeed * Time.deltaTime);
                 if (Vector3.Distance(cube.transform.position, target) > 0.1f)
                 {
-                   CubitosReachTarget = false;
+                    CubitosReachTarget = false;
                 }
             }
             //for (int i = 0; i < cubitos.Count; i++)
