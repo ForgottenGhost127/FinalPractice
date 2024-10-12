@@ -5,82 +5,87 @@ using UnityEngine;
 public class cubitoManager : MonoBehaviour
 {
     public GameObject cubitoPref;
+    public GameObject coinPref;
     public int cubitoCount = 10;
-    public float moveSpeed = 5;
 
     private List<GameObject> cubitos = new List<GameObject>();
-    private bool isMoving = false;
+    private GameObject moneda;
 
+    //Funciona todo bien hasta que los cubos que pierden todas las vidas son eliminados y queda más de un cubo. Da un MissingReference porque la función está intentando acceder a esos cubos que se han destruido.
+    //Creo que la solución sería actualizar la Lista para que ese MissingReference no vuelva a salir. También, habría que añadir más vidas para que dure más el juego en sí.
+    //Aparte de lo anterior nos queda añadir que el juego termine cuando solo quede un cubo (da igual que haya sido por puntos o por vida) y el sistema de guardado de datos.
+    //EL SaveSystem requiere de un Canvas, un menú (accedemos por tecla), tres botones(Restart, Guardar, CargarDatos) y un script con el código correspondiente (la cosa es donde iría el script). 
     void Start()
     {
-        for (int i = 0; i < cubitoCount; i++) //Instanciando los cubos en posiciones aleatorias
-        {
-            Vector3 randomPos = new Vector3(Random.Range(-10f, 10f), 0.5f, Random.Range(-10f, 10f));
-            GameObject cubito = Instantiate(cubitoPref, randomPos, Quaternion.identity);
-            cubitos.Add(cubito);
-
-            cubito.GetComponent<Renderer>().material.color = Color.magenta; //Los cubitos en "Idle" tendrán este color.
-        }
+        InstanciarCubitos();
     }
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0) && !isMoving) //Click Mouse y Raycast
+        if(Input.GetMouseButtonDown(0)) //Click Mouse y Raycast
         {
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if(Physics.Raycast(rayo, out hit))
             {
                 Vector3 targetPos = hit.point;
-                isMoving = true;
-                StartCoroutine(MoveCubitos(targetPos));
+                InstanciarCoins(targetPos);
+                MueveCubitosHacia(targetPos);
             }
+        }
+    }
+
+    public void InstanciarCubitos()
+    {
+        for (int i = 0; i < cubitoCount; i++) //Instanciando los cubos en posiciones aleatorias
+        {
+            Vector3 randomPos = new Vector3(Random.Range(-10f, 10f), 0.5f, Random.Range(-10f, 10f));
+            GameObject cubito = Instantiate(cubitoPref, randomPos, Quaternion.identity);
+            cubitos.Add(cubito);
+        }
+    }
+
+    private void InstanciarCoins(Vector3 position) //Instancia la moneda donde se ha detectado el click del ratón.
+    {
+        if (moneda != null)
+        {
+            Destroy(moneda);
+        }
+        moneda = Instantiate(coinPref, position, Quaternion.identity);
+    }
+
+    public void MueveCubitosHacia(Vector3 targetPos)
+    {
+        foreach (GameObject cubito in cubitos)
+        {
+            cubito.GetComponent<cubitoControll>().MoveCubito(targetPos);
+        }
+    }
+
+    public void NotificarMonedaRecogida(cubitoControll cuboGanador)
+    {
+        foreach (GameObject cubito in cubitos)
+        {
+            cubitoControll cubitoController = cubito.GetComponent<cubitoControll>();
+            cubitoController.StopMoving();
+            if (cubitoController != cuboGanador)
+            {
+                cubitoController.loseVidas();
+            }
+        }
+        ReiniciarCubitos();
+    }
+
+    public void ReiniciarCubitos()
+    {
+        foreach (GameObject cubito in cubitos) //Se reinicia la posición de los cubitos... 
+        {
+            Vector3 randomPos = new Vector3(Random.Range(-10f, 10f), 0.5f, Random.Range(-10f, 10f));
+            cubito.transform.position = randomPos;
+            cubito.GetComponent<cubitoControll>().ResetColor();
         }
         
     }
 
-    IEnumerator MoveCubitos(Vector3 target)
-    {
-        foreach(GameObject cube in cubitos)
-        {
-            cube.GetComponent<Renderer>().material.color = Color.cyan;
-        }
-
-        bool CubitosReachTarget = false;
-        //float separDistance = 3f; //Distancia de separación entre los cubos, porque se me aglomeraban después de coger la primera moneda y visualmente, sólo se veía un cubo algo deforme.
-
-        while(!CubitosReachTarget)
-        {
-            CubitosReachTarget = true;
-
-            foreach (GameObject cube in cubitos)
-            {
-                cube.transform.position = Vector3.MoveTowards(cube.transform.position, target, moveSpeed * Time.deltaTime);
-                if (Vector3.Distance(cube.transform.position, target) > 0.1f)
-                {
-                    CubitosReachTarget = false;
-                }
-            }
-            //for (int i = 0; i < cubitos.Count; i++)
-            //{
-            //    GameObject cube = cubitos[i];
-            //    Vector3 offset = new Vector3(Mathf.Sin(i + Time.time) * separDistance, 0, Mathf.Cos(i + Time.time) * separDistance);
-            //    Vector3 moveTarget = target + offset;
-            //    cube.transform.position = Vector3.MoveTowards(cube.transform.position, moveTarget, moveSpeed * Time.deltaTime);
-            //    if (Vector3.Distance(cube.transform.position, moveTarget) > 0.1f)
-            //    {
-            //        CubitosReachTarget = false;
-            //    }
-            //}
-            yield return null;
-        }
-
-        foreach (GameObject cube in cubitos)
-        {
-            cube.GetComponent<Renderer>().material.color = Color.magenta;
-        }
-
-        isMoving = false; 
-    }
 
 }
