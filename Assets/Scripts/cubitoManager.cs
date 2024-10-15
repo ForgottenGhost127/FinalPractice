@@ -11,10 +11,8 @@ public class cubitoManager : MonoBehaviour
     private List<GameObject> cubitos = new List<GameObject>();
     private GameObject moneda;
 
-    //Funciona todo bien hasta que los cubos que pierden todas las vidas son eliminados y queda más de un cubo. Da un MissingReference porque la función está intentando acceder a esos cubos que se han destruido.
-    //Creo que la solución sería actualizar la Lista para que ese MissingReference no vuelva a salir. También, habría que añadir más vidas para que dure más el juego en sí.
     //Aparte de lo anterior nos queda añadir que el juego termine cuando solo quede un cubo (da igual que haya sido por puntos o por vida) y el sistema de guardado de datos.
-    //EL SaveSystem requiere de un Canvas, un menú (accedemos por tecla), tres botones(Restart, Guardar, CargarDatos) y un script con el código correspondiente (la cosa es donde iría el script). 
+    //EL SaveSystem requiere de un Canvas, un menú (accedemos por tecla), tres botones(Restart, Guardar, CargarDatos) y un script con el código correspondiente (la cosa es donde iría el script).
     void Start()
     {
         InstanciarCubitos();
@@ -64,6 +62,7 @@ public class cubitoManager : MonoBehaviour
 
     public void NotificarMonedaRecogida(cubitoControll cuboGanador)
     {
+        List<GameObject> cubiEliminados = new List<GameObject>();
         foreach (GameObject cubito in cubitos)
         {
             cubitoControll cubitoController = cubito.GetComponent<cubitoControll>();
@@ -71,8 +70,18 @@ public class cubitoManager : MonoBehaviour
             if (cubitoController != cuboGanador)
             {
                 cubitoController.loseVidas();
+                if(cubitoController.vidas <= 0)
+                {
+                    cubiEliminados.Add(cubito);
+                }
             }
         }
+
+        foreach (GameObject cubo in cubiEliminados)
+        {
+            cubitos.Remove(cubo);
+        }
+
         ReiniciarCubitos();
     }
 
@@ -80,9 +89,12 @@ public class cubitoManager : MonoBehaviour
     {
         foreach (GameObject cubito in cubitos) //Se reinicia la posición de los cubitos... 
         {
-            Vector3 randomPos = new Vector3(Random.Range(-10f, 10f), 0.5f, Random.Range(-10f, 10f));
-            cubito.transform.position = randomPos;
-            cubito.GetComponent<cubitoControll>().ResetColor();
+            if(cubito != null)
+            {
+                Vector3 randomPos = new Vector3(Random.Range(-10f, 10f), 0.5f, Random.Range(-10f, 10f));
+                cubito.transform.position = randomPos;
+                cubito.GetComponent<cubitoControll>().ResetColor();
+            }
         }
         
     }
