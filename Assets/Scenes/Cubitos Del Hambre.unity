@@ -204,7 +204,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 30883670}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 447291944}
+        m_TargetAssemblyTypeName: saveSystem, Assembly-CSharp
+        m_MethodName: cargarPartida
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &30883670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,7 +415,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 138051549}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 447291944}
+        m_TargetAssemblyTypeName: saveSystem, Assembly-CSharp
+        m_MethodName: reiniciarPartida
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &138051549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,6 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 874c21639547b5e41a1cd94c8f0e5296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubitos: []
 --- !u!4 &447291945
 Transform:
   m_ObjectHideFlags: 0
@@ -738,7 +763,6 @@ GameObject:
   - component: {fileID: 663598484}
   - component: {fileID: 663598483}
   - component: {fileID: 663598482}
-  - component: {fileID: 663598486}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -829,18 +853,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &663598486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 663598481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e54b94b2093aa9478414504d7a4ba3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1311,7 +1323,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1170936027}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 447291944}
+        m_TargetAssemblyTypeName: saveSystem, Assembly-CSharp
+        m_MethodName: guardarPartida
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1170936027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1494,6 +1518,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2045267939}
   - component: {fileID: 2045267938}
+  - component: {fileID: 2045267940}
   m_Layer: 0
   m_Name: CubitosManager
   m_TagString: CubitoM
@@ -1531,6 +1556,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2045267940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045267937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e54b94b2093aa9478414504d7a4ba3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasMenu: {fileID: 663598481}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

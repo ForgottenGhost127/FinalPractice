@@ -11,8 +11,6 @@ public class cubitoManager : MonoBehaviour
     private List<GameObject> cubitos = new List<GameObject>();
     private GameObject moneda;
 
-    //Aparte de lo anterior nos queda añadir que el juego termine cuando solo quede un cubo (da igual que haya sido por puntos o por vida) y el sistema de guardado de datos.
-    //EL SaveSystem requiere de un Canvas, un menú (accedemos por tecla), tres botones(Restart, Guardar, CargarDatos) y un script con el código correspondiente (la cosa es donde iría el script).
     void Start()
     {
         InstanciarCubitos();
@@ -20,16 +18,21 @@ public class cubitoManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) //Click Mouse y Raycast
+        if(Input.GetMouseButtonDown(0)) //Click Mouse, Menu y Raycast
         {
-            Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if(Physics.Raycast(rayo, out hit))
+            MenuController menuC = FindObjectOfType<MenuController>();
+            if(menuC != null && !menuC.IsMenuActive())
             {
-                Vector3 targetPos = hit.point;
-                InstanciarCoins(targetPos);
-                MueveCubitosHacia(targetPos);
+                Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(rayo, out hit))
+                {
+                    Vector3 targetPos = hit.point;
+                    InstanciarCoins(targetPos);
+                    MueveCubitosHacia(targetPos);
+                }
             }
+            
         }
     }
 

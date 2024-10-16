@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   puntos: 0
-  vidas: 3
+  vidas: 7
   moveSpeed: 5
 --- !u!54 &7307452350982834680
 Rigidbody:

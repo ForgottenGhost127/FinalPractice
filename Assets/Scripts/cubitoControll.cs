@@ -5,7 +5,7 @@ using UnityEngine;
 public class cubitoControll : MonoBehaviour
 {
     public int puntos = 0;
-    public int vidas = 3;
+    public int vidas = 7;
     public float moveSpeed = 5;
     private bool isMoving = false;
 
