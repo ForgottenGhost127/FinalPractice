@@ -22,8 +22,21 @@ public class saveSystem : MonoBehaviour
 
     public GameObject[] cubitos;
 
+    public void RecibirCubitos(GameObject[] cubos)
+    {
+        cubitos = cubos;
+        Debug.Log("Cubitos recibidos");
+    }
+
+    public void ActualizarArray()
+    {
+        cubitos = GameObject.FindGameObjectsWithTag("Player");
+    }
+
     public void guardarPartida() //Guardamos los datos de la partida.
     {
+        ActualizarArray();
+
         PartidaData partidaData = new PartidaData();
         partidaData.cubitosData = new CuboData[cubitos.Length];
 
@@ -90,7 +103,23 @@ public class saveSystem : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No se encontró el archivo para eliminar.");
+            Debug.LogWarning("No se encontró el archivo para eliminar, pero se reinició la partida.");
+        }
+
+        ReiniciarEstadoJuego();
+    }
+
+    private void ReiniciarEstadoJuego() //Reiniciamos el juego con cubos nuevos
+    {
+        cubitoManager cubiMana = FindObjectOfType<cubitoManager>();
+        if(cubiMana != null)
+        {
+            cubiMana.EliminarCubisActuales();
+            cubiMana.InstanciarCubitos();
+        }
+        else
+        {
+            Debug.Log("cubitoManager not found.");
         }
     }
 }

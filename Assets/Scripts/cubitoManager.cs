@@ -14,6 +14,12 @@ public class cubitoManager : MonoBehaviour
     void Start()
     {
         InstanciarCubitos();
+
+        saveSystem saveSystem = FindObjectOfType<saveSystem>();
+        if (saveSystem != null)
+        {
+            saveSystem.RecibirCubitos(cubitos.ToArray());
+        }
     }
 
     void Update()
@@ -86,6 +92,12 @@ public class cubitoManager : MonoBehaviour
         }
 
         ReiniciarCubitos();
+
+        saveSystem saveSystem = FindObjectOfType<saveSystem>();
+        if (saveSystem != null)
+        {
+            saveSystem.RecibirCubitos(cubitos.ToArray());
+        }
     }
 
     public void ReiniciarCubitos()
@@ -100,6 +112,23 @@ public class cubitoManager : MonoBehaviour
             }
         }
         
+    }
+
+    public void EliminarCubisActuales() //Borramos los cubos tanto de la escena como de la lista antes de reiniciar la partida completamente.
+    {
+        List<GameObject> cubosAEliminar = new List<GameObject>();
+        foreach (GameObject cubito in cubitos)
+        {
+            cubosAEliminar.Add(cubito);
+        }
+
+        foreach (GameObject cubito in cubosAEliminar)
+        {
+            cubitos.Remove(cubito);
+            Destroy(cubito);
+        }
+
+        cubitos.Clear();
     }
 
 
