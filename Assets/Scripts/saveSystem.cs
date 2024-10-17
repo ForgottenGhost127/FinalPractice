@@ -19,9 +19,13 @@ public class PartidaData
 
 public class saveSystem : MonoBehaviour
 {
-
     public GameObject[] cubitos;
+    private cubitoManager cubiMana;
 
+    private void Start()
+    {
+        cubiMana = FindObjectOfType<cubitoManager>();
+    }
     public void RecibirCubitos(GameObject[] cubos)
     {
         cubitos = cubos;
@@ -73,15 +77,23 @@ public class saveSystem : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             PartidaData partidaData = JsonUtility.FromJson<PartidaData>(json);
+            if (partidaData.cubitosData.Length != cubitos.Length)
+            {
+                Debug.LogError("El número de cubitos guardados no coincide con los actuales.");
+                return;
+            }
 
             for (int i = 0; i < cubitos.Length; i++)
             {
                 CuboData cuboData = partidaData.cubitosData[i];
                 cubitoControll cubitoController = cubitos[i].GetComponent<cubitoControll>();
-
-                cubitoController.puntos = cuboData.puntos;
-                cubitoController.vidas = cuboData.vidas;
-                cubitos[i].transform.position = new Vector3(cuboData.posX, cuboData.posY, cuboData.posZ);
+                if(cubitoController != null)
+                {
+                    cubitoController.puntos = cuboData.puntos;
+                    cubitoController.vidas = cuboData.vidas;
+                    cubitos[i].transform.position = new Vector3(cuboData.posX, cuboData.posY, cuboData.posZ);
+                }
+                
             }
 
             Debug.Log("Partida cargada desde " + path);
@@ -92,8 +104,7 @@ public class saveSystem : MonoBehaviour
         }
     }
 
-   //En caso de que escoja el botón reiniciar partida
-    public void reiniciarPartida()
+    public void reiniciarPartida()//En caso de que escoja el botón reiniciar partida
     {
         string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
@@ -111,7 +122,6 @@ public class saveSystem : MonoBehaviour
 
     private void ReiniciarEstadoJuego() //Reiniciamos el juego con cubos nuevos
     {
-        cubitoManager cubiMana = FindObjectOfType<cubitoManager>();
         if(cubiMana != null)
         {
             cubiMana.EliminarCubisActuales();
@@ -121,5 +131,10 @@ public class saveSystem : MonoBehaviour
         {
             Debug.Log("cubitoManager not found.");
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        guardarPartida();
     }
 }

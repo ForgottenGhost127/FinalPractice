@@ -10,12 +10,12 @@ public class cubitoManager : MonoBehaviour
 
     private List<GameObject> cubitos = new List<GameObject>();
     private GameObject moneda;
-
+    private saveSystem saveSystem;
     void Start()
     {
         InstanciarCubitos();
+        saveSystem = FindObjectOfType<saveSystem>();
 
-        saveSystem saveSystem = FindObjectOfType<saveSystem>();
         if (saveSystem != null)
         {
             saveSystem.RecibirCubitos(cubitos.ToArray());
@@ -89,11 +89,10 @@ public class cubitoManager : MonoBehaviour
         foreach (GameObject cubo in cubiEliminados)
         {
             cubitos.Remove(cubo);
+            Destroy(cubo);
         }
 
         ReiniciarCubitos();
-
-        saveSystem saveSystem = FindObjectOfType<saveSystem>();
         if (saveSystem != null)
         {
             saveSystem.RecibirCubitos(cubitos.ToArray());
@@ -116,18 +115,10 @@ public class cubitoManager : MonoBehaviour
 
     public void EliminarCubisActuales() //Borramos los cubos tanto de la escena como de la lista antes de reiniciar la partida completamente.
     {
-        List<GameObject> cubosAEliminar = new List<GameObject>();
         foreach (GameObject cubito in cubitos)
         {
-            cubosAEliminar.Add(cubito);
-        }
-
-        foreach (GameObject cubito in cubosAEliminar)
-        {
-            cubitos.Remove(cubito);
             Destroy(cubito);
         }
-
         cubitos.Clear();
     }
 
