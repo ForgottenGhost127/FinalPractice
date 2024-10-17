@@ -11,6 +11,8 @@ public class cubitoManager : MonoBehaviour
     private List<GameObject> cubitos = new List<GameObject>();
     private GameObject moneda;
     private saveSystem saveSystem;
+    private bool isGameStopped = false;
+
     void Start()
     {
         InstanciarCubitos();
@@ -24,7 +26,10 @@ public class cubitoManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) //Click Mouse, Menu y Raycast
+        if (isGameStopped)
+        { return; }
+
+        if (Input.GetMouseButtonDown(0)) //Click Mouse, Menu y Raycast
         {
             MenuController menuC = FindObjectOfType<MenuController>();
             if(menuC != null && !menuC.IsMenuActive())
@@ -90,6 +95,12 @@ public class cubitoManager : MonoBehaviour
         {
             cubitos.Remove(cubo);
             Destroy(cubo);
+        }
+
+        if (cubitos.Count <= 1)
+        {
+            isGameStopped = true;
+            Debug.Log("El juego se ha detenido. Solo queda un cubito.");
         }
 
         ReiniciarCubitos();
